@@ -69,7 +69,7 @@ def choice_4(final):
         print("Student not found in record.")
 
     print("")
-    input("Press enter to continuea")
+    input("Press enter to continue")
 
 while True:
     clear()
