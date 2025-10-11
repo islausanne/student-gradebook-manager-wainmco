@@ -35,11 +35,27 @@ def choice_3():
                 return ": ".join(check)
     return "Student not found"
 
+def choice_4(final):
+    clear()
+    name = input("Who do you want to remove: ")
+    name = name.capitalize()
+    with open("grades.txt", "r") as file:
+        for line in file:
+            if name in line.strip().split(","):
+                file.readline()
+            else:
+                final += line.strip().split()
+    print("")
+    print(final)
+    input("Press enter to continuea")
+
 while True:
     clear()
     print("1: Display records")
     print("2: Add a new record")
     print("3: Search for a student")
+    print("4: Update or remove a record")
+    print("5: calculate class statistics")
 
     choice = int(input("What would you like to do with the grade book? (Select options 1-4): "))
 
@@ -61,3 +77,8 @@ while True:
         print("")
         print(choice_3())
         input("Press enter to continue")
+
+    elif choice == 4:
+        print("")
+        choice_4(final="")
+        
