@@ -8,45 +8,67 @@ def choice_1(final):
         for line in file:
             parts = line.strip().split(",")
             final += ": ".join(parts) + '\n'
+
     return final
 
 
 def choice_2():
     name = input("Enter the students first name: ")
     grade = int(input("Enter the students grade: "))
+
     with open("grades.txt", "a") as file:
         file.write(f"\n{name},{grade}")
+
     print("Student added succesfully!")
     print("")
     print("Updated grade book: ")
     print(choice_1(final=""))
     input("Press enter to continue")
+
     clear()
     return
 
 def choice_3():
     clear()
-    name = input("Who would you like to search for: ")
-    name = name.capitalize()
+
+    name = input("Who would you like to search for: ").capitalize()
+
     with open("grades.txt", "r") as file:
         for line in file:
             check = line.strip().split(",")
+
             if check[0] == name:
                 return ": ".join(check)
+            
     return "Student not found"
 
 def choice_4(final):
     clear()
-    name = input("Who do you want to remove: ")
-    name = name.capitalize()
+
+    found = False
+    name = input("Who do you want to remove: ").capitalize()
+
     with open("grades.txt", "r") as file:
         for line in file:
-            if name in line.strip().split(","):
-                file.readline()
-            else:
-                final += line.strip().split()
+
+            current_line = line.strip().split(",")
+
+            if name in current_line:
+                found = True
+
+            if name not in current_line:
+                final.append(line)
+            
+    if found:
+        with open("grades.txt", "w") as file:
+            file.writelines(final)
+        
+        print(f"{name} removed succesfully!")
+        
+    else:
+        print("Student not found in record.")
+
     print("")
-    print(final)
     input("Press enter to continuea")
 
 while True:
@@ -80,5 +102,5 @@ while True:
 
     elif choice == 4:
         print("")
-        choice_4(final="")
+        choice_4(final=[])
         
