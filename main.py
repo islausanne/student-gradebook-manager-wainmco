@@ -1,5 +1,7 @@
 import os
 # OS is used to clear the terminal for better readibility
+from datetime import datetime
+# Will be used for time stamps for whenever any files are updated
 
 # Function to clear the terminal screen (works for both Windows and Mac/Linux)
 def clear():
@@ -29,6 +31,7 @@ def choice_2():
 
     with open("grades.txt", "a") as file:   # Open the file and add the user inputs of the name and grade
         file.write(f"\n{name},{grade}") # \n used to create a new line in the .txt file
+        file.write(f"\n\nUpdate at: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")},\nUpdate type: Add a student\nSuccesful: True")
 
     # Prints out if succesful and shows the updated grades.txt file using the function that would be used for choice 1
     print("Student added succesfully!")
@@ -59,6 +62,7 @@ def choice_3():
 
             if check[0] == name:
                 return ": ".join(check) # If studen found return their name and grade
+        
 
     # If student not, return "Student not found"
     return "Student not found"
@@ -83,6 +87,8 @@ def choice_4(final):
             current_line = line.strip().split(",")
 
             if name in current_line: # If the name that is being search for is found, found = True
+                with open("grades.txt", "a") as f:
+                    file.write(f"\n\nUpdate at: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")},\nUpdate type: Remove a student\nSuccesful: True")
                 found = True
 
             if name not in current_line: # Else, add the name to a list that will then be used to "recreate" the file without the target
@@ -95,6 +101,8 @@ def choice_4(final):
         print(f"{name} removed succesfully!") # Confirm that the target has been removed
         
     else:
+        with open("grades.txt", "a") as f:
+            f.write(f"\n\nUpdate at: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")},\nUpdate type: Remove a student\nSuccesful: False")
         print("Student not found in record.") # Else, student was not in the file and could not be removed
 
     print("")

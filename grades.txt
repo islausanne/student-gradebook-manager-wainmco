@@ -1,2 +1,7 @@
 Carlos,91
 Dana,66
+
+
+Update at: 29/10/2025 13:05:07,
+Update type: Remove a student
+Succesful: False
