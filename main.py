@@ -15,10 +15,14 @@ def choice_1(final):
             parts = line.strip().split(",")
             final += ": ".join(parts) + '\n'    # Take the contents found and put them together
 
+    with open("log.txt", "a") as file:
+            file.write(f"Display all students done on {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}\n")
+
     return final
 
 # Function to add a new student and their grade to the file
 def choice_2():
+
     while True:
         try:
             name = input("Enter the students first name: ")
@@ -28,6 +32,9 @@ def choice_2():
             clear()
             print("Invalid input, please try again")
     # Get user inputs of what they want to add
+
+    with open("log.txt", "a") as file:
+            file.write(f"New student added on {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}, Student added: {name}, Students grade: {grade}\n")
 
     with open("grades.txt", "a") as file:   # Open the file and add the user inputs of the name and grade
         file.write(f"\n{name},{grade}") # \n used to create a new line in the .txt file
@@ -46,6 +53,9 @@ def choice_2():
 # Function to search for a student's record
 def choice_3():
     clear()
+
+    with open("log.txt", "a") as file:
+            file.write(f"Student search on {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}\n")
 
     while True:
         try:
@@ -87,8 +97,8 @@ def choice_4(final):
             current_line = line.strip().split(",")
 
             if name in current_line: # If the name that is being search for is found, found = True
-                with open("grades.txt", "a") as f:
-                    file.write(f"\n\nUpdate at: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")},\nUpdate type: Remove a student\nSuccesful: True")
+                with open("log.txt", "a") as f:
+                    f.write(f"Student removed on {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}, Succesful: True, Student removed: {name}\n")
                 found = True
 
             if name not in current_line: # Else, add the name to a list that will then be used to "recreate" the file without the target
@@ -101,14 +111,47 @@ def choice_4(final):
         print(f"{name} removed succesfully!") # Confirm that the target has been removed
         
     else:
-        with open("grades.txt", "a") as f:
-            f.write(f"\n\nUpdate at: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")},\nUpdate type: Remove a student\nSuccesful: False")
+        with open("log.txt", "a") as file:
+            file.write(f"Student removed on {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}, Succesful: False\n")
         print("Student not found in record.") # Else, student was not in the file and could not be removed
+
 
     print("")
     input("Press enter to continue")
 
+# Choice for calculating class summary
+def choice_5():
+    amount = 0
+    total = 0
+    grade = 0
 
+    with open("grades.txt", "r") as file:
+        for lines in file:
+            part = lines.strip().split(",")
+            try:
+                grade = int(part[-1])
+            except ValueError:
+                pass
+            print(grade)
+            if grade == 0:
+                pass
+            else:
+                amount += 1
+                total += grade
+            grade = 0
+    
+    average = total / amount
+    final = round(average, 1)
+    print(final)
+
+    with open("summary.txt", "a") as file:
+        file.write(f"Class average: {final} (Calculated on the {datetime.now().strftime("%d/%m/%Y %H:%M:%S")})\n")
+    
+    with open("log.txt", "a") as file:
+        file.write(f"Class summary calculated on {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}\n")
+
+
+    input("Average calculated succesfully, you can view in summary.txt. Press enter to continue")
 
 # Main program loop
 while True:
@@ -130,7 +173,7 @@ while True:
 
     # Get user choice
     try:
-        choice = int(input("What would you like to do with the grade book? (Select options 1-4): "))
+        choice = int(input("What would you like to do with the grade book? (Select options 1-5): "))
     except ValueError:
         choice = 0
         clear()
@@ -170,3 +213,10 @@ while True:
     elif choice == 4:
         print("")
         choice_4(final=[])
+    
+    # Option 5: Class summary
+    elif choice == 5:
+        clear()
+        print("")
+        choice_5()
+
